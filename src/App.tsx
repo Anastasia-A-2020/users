@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import "./index.scss";
 import { Success } from "./components/Success";
 import { Users } from "./components/Users";
+import { UserProps } from "./components/Users/User";
 
 function App() {
-  const [users, setUsers] = useState([]);
-  const [invites, setInvites] = useState([]);
-  const [isLoading, setLoading] = useState(true);
-  const [success, setSuccess] = useState(false);
-  const [serchValue, setSearchValue] = useState("");
+  const [users, setUsers] = useState<UserProps[]>([]);
+  const [invites, setInvites] = useState<number[]>([]);
+  const [isLoading, setLoading] = useState<boolean>(true);
+  const [success, setSuccess] = useState<boolean>(false);
+  const [searchValue, setSearchValue] = useState<string>("");
 
   useEffect(() => {
     fetch("https://reqres.in/api/users")
@@ -21,12 +22,11 @@ function App() {
       .finally(() => setLoading(false));
   }, []);
 
-  const onChangeSearchValue = e => {
+  const onChangeSearchValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
   };
 
-  const onClickInvite = id => {
-    console.log(id);
+  const onClickInvite = (id: number) => {
     if (invites.includes(id)) {
       setInvites(prev => prev.filter(_id => _id !== id));
     } else {
@@ -46,7 +46,7 @@ function App() {
         <Users
           items={users}
           isLoading={isLoading}
-          searchValue={serchValue}
+          searchValue={searchValue}
           onChangeSearchValue={onChangeSearchValue}
           invites={invites}
           onClickInvite={onClickInvite}

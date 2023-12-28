@@ -1,7 +1,10 @@
 import React from "react";
-import PropTypes from "prop-types";
 
-export const Success = ({ count }) => {
+interface SuccessProps {
+  count: number;
+}
+
+export const Success: React.FC<SuccessProps> = ({ count }) => {
   return (
     <div className="success-block">
       <img src="/assets/success.svg" alt="Success" />
@@ -15,8 +18,4 @@ export const Success = ({ count }) => {
       </button>
     </div>
   );
-};
-
-Success.propTypes = {
-  count: PropTypes.number.isRequired,
 };

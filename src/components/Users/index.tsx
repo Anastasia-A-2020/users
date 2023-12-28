@@ -1,9 +1,18 @@
 import React from "react";
 import { Skeleton } from "./Skeleton";
-import { User } from "./User";
-import PropTypes from "prop-types";
+import { User, UserProps } from "./User";
 
-export const Users = ({
+interface UsersProps {
+  items: UserProps[];
+  isLoading: boolean;
+  searchValue: string;
+  onChangeSearchValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  invites: number[];
+  onClickInvite: (id: number) => void;
+  onClickSendInvites: () => void;
+}
+
+export const Users: React.FC<UsersProps> = ({
   items,
   isLoading,
   searchValue,
@@ -34,7 +43,7 @@ export const Users = ({
       ) : (
         <ul className="users-list">
           {items
-            .filter((obj) => {
+            .filter(obj => {
               const fullName = (
                 obj.first_name +
                 " " +
@@ -45,11 +54,11 @@ export const Users = ({
                 obj.email.toLowerCase().includes(searchValue.toLowerCase())
               );
             })
-            .map((obj) => (
+            .map(obj => (
               <User
                 {...obj}
                 key={obj.id}
-                isInvited={invites.includes(obj.id)}
+                isInvited={invites.some(invite => invite === obj.id)}
                 onClickInvite={onClickInvite}
               />
             ))}
@@ -62,14 +71,4 @@ export const Users = ({
       )}
     </>
   );
-};
-
-Users.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.object),
-  isLoading: PropTypes.bool,
-  searchValue: PropTypes.string.isRequired,
-  onChangeSearchValue: PropTypes.func.isRequired,
-  invites: PropTypes.array.isRequired,
-  onClickInvite: PropTypes.func.isRequired,
-  onClickSendInvites: PropTypes.func.isRequired,
 };
